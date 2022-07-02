@@ -4,9 +4,10 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 
 import { Provider } from 'inversify-react';
-import { IocContainer } from './data/ioc/container';
+import { IocContainer } from './libs/ioc/container';
 
-// import './index.css';
+import 'antd/dist/antd.css';
+import './assets/css/index.css';
 
 const rootElement = document.getElementById('root') as HTMLElement;
 
