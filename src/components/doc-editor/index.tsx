@@ -97,32 +97,32 @@ export const DocEditor = () => {
   };
 
   // const currentNodePosition
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     const currentElement = getCurrentNode()?.element;
-  //     if (!currentElement) return;
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const currentElement = getCurrentNode()?.element;
+      if (!currentElement) return;
 
-  //     const currentDom = ReactEditor.toDOMNode(editor, currentElement);
-  //     const editorDom = ReactEditor.toDOMNode(editor, editor);
+      const currentDom = ReactEditor.toDOMNode(editor, currentElement);
+      const editorDom = ReactEditor.toDOMNode(editor, editor);
 
-  //     const currentDomClient = currentDom.getBoundingClientRect();
+      const currentDomClient = currentDom.getBoundingClientRect();
 
-  //     // calculate y
-  //     const y =
-  //       currentDomClient.top + currentDomClient.height / 2 - editorDom.getBoundingClientRect().top;
+      // calculate y
+      const y =
+        currentDomClient.top + currentDomClient.height / 2 - editorDom.getBoundingClientRect().top;
 
-  //     // calculate x
-  //     const caretPosOffset = window.getSelection()?.getRangeAt(0).startOffset || 0;
-  //     const x = getWidthOfText(currentDom.innerText.slice(0, caretPosOffset));
+      // calculate x
+      const caretPosOffset = window.getSelection()?.getRangeAt(0).startOffset || 0;
+      const x = getWidthOfText(currentDom.innerText.slice(0, caretPosOffset));
 
-  //     console.log({
-  //       x,
-  //       y: roundHeight(y),
-  //     });
-  //   }, 1500);
+      console.log({
+        x,
+        y: roundHeight(y),
+      });
+    }, 1500);
 
-  //   return () => clearInterval(interval);
-  // }, [editor, getCurrentNode]);
+    return () => clearInterval(interval);
+  }, [editor, getCurrentNode]);
 
   return (
     <Slate
