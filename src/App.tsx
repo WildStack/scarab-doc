@@ -11,13 +11,13 @@ function App() {
       <Topbar />
       <Spacer />
 
-      <div style={{ margin: 100 }}>
+      {/* <div style={{ margin: 100 }}>
         <CustomCursor />
-      </div>
+      </div> */}
 
-      {/* <ScrollContainer>
+      <ScrollContainer>
         <DocEditor />
-      </ScrollContainer> */}
+      </ScrollContainer>
     </Fragment>
   );
 }

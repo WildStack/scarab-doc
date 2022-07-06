@@ -12,10 +12,13 @@ import './assets/css/index.css';
 const rootElement = document.getElementById('root') as HTMLElement;
 
 ReactDOM.createRoot(rootElement).render(
-  <React.StrictMode>
-    <Provider container={IocContainer.getContainer()}>
-      <App />
-    </Provider>
-  </React.StrictMode>
+  <Provider container={IocContainer.getContainer()}>
+    <App />
+  </Provider>
+  // <React.StrictMode>
+  //   <Provider container={IocContainer.getContainer()}>
+  //     <App />
+  //   </Provider>
+  // </React.StrictMode>
 );
 

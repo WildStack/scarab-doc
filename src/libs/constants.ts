@@ -16,6 +16,11 @@ export const consts = {
   spacer: {
     height: 20,
   },
+
+  decoEditor: {
+    charHeight: 20,
+    charWidth: 7.3,
+  },
 };
 
 export const styles = createStyle({
