@@ -11,5 +11,13 @@ export const styles = createStyle({
     height: consts.spacer.height,
     backgroundColor: '#cacccf',
   },
+  docEditorEditable: {
+    padding: 5,
+    margin: '0 auto',
+    width: 1100,
+    backgroundColor: 'white',
+    borderRadius: 0,
+    minHeight: 800,
+  },
 });
 

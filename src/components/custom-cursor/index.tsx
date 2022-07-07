@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 
-export const CustomCursor = () => {
+export const CustomCursor = ({ color, name }: { color: string; name: string }) => {
   return (
     <Fragment>
       <div style={{ position: 'relative' }}>
@@ -8,22 +8,22 @@ export const CustomCursor = () => {
           style={{
             position: 'absolute',
             top: -30,
-            backgroundColor: '#a00000',
-            color: 'white',
+            backgroundColor: color,
+            color: 'black',
             borderRadius: 3,
             margin: 0,
             padding: '2px 5px',
             fontSize: 14,
           }}
         >
-          atheros aa
+          {name}
         </div>
 
         <div
           style={{
             height: 20,
             width: 2,
-            backgroundColor: '#a00000',
+            backgroundColor: color,
           }}
         ></div>
       </div>

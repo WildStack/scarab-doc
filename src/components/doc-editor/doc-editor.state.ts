@@ -21,5 +21,11 @@ export class DocEditorState {
   public set docSession(value: DocSession) {
     this._docSession = value;
   }
+
+  public get getDocContent() {
+    return this._docSession.content
+      ? (JSON.parse(this._docSession.content) as Descendant[])
+      : DocEditorState.defaultValue;
+  }
 }
 

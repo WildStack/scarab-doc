@@ -1,6 +1,5 @@
-import { notification } from 'antd';
-import { AxiosError } from 'axios';
 import { inject } from 'inversify';
+import { showErroNotification } from '../../common';
 import { http } from '../../common/http';
 import { Singleton } from '../../common/ioc/container.decorator';
 import { DocSession } from '../../models/state/doc-session';
@@ -20,26 +19,13 @@ export class AuthController {
       });
 
       // set user
-      this.docEditorState.docSession = data.docState;
+      this.docEditorState.docSession = data.docState || '';
       this.authState.user = data.user;
 
       // update state
       this.authState.isAuth = true;
     } catch (error) {
-      let errMessage: string;
-
-      if (error instanceof AxiosError) {
-        // show label
-        console.log('error');
-        console.log(error);
-        errMessage = error.response?.data?.message || 'unknown error';
-      } else {
-        errMessage = 'unknown error';
-      }
-
-      notification.error({
-        message: errMessage,
-      });
+      showErroNotification(error);
     }
   }
 }

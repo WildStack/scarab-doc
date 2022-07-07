@@ -33,3 +33,12 @@ body {
   background-color: #a00000;
 }
 
+.cm-editor {
+  margin: 0 auto;
+}
+
+.cm-line {
+  display: block;
+  padding: 0 2px 0 0px !important;
+}
+

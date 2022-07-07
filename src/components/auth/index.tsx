@@ -35,7 +35,7 @@ export const Auth: React.FC = () => {
           tooltip="აუცილებელი ველია"
           rules={[{ required: true, message: 'აუცილებელი ველია !' }]}
         >
-          <Input placeholder="გთხოვთ შეიყვანოთ თქვენი Username" />
+          <Input tabIndex={1} placeholder="გთხოვთ შეიყვანოთ თქვენი Username" />
         </Form.Item>
 
         <Form.Item>

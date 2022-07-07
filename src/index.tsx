@@ -8,8 +8,13 @@ import { IocContainer } from './common/ioc/container';
 
 import 'antd/dist/antd.css';
 import './assets/css/index.css';
+import { configure } from 'mobx';
 
 const rootElement = document.getElementById('root') as HTMLElement;
+
+configure({
+  enforceActions: 'never',
+});
 
 ReactDOM.createRoot(rootElement).render(
   <Provider container={IocContainer.getContainer()}>

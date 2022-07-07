@@ -1,3 +1,5 @@
+import { notification } from 'antd';
+import { AxiosError } from 'axios';
 import { CSSProperties } from 'react';
 import { consts } from './config/constants';
 
@@ -17,10 +19,29 @@ export const getWidthOfText = (txt: string) => {
 
   document.body.appendChild(el);
   const offsetWidth = el.offsetWidth;
-  document.body.removeChild(el);
+  // document.body.removeChild(el);
 
   return offsetWidth;
 };
 
 export const createStyle = <T extends string>(s: Record<T, CSSProperties>) => s;
+
+export const showErroNotification = (error: any) => {
+  console.log('show notification');
+
+  let errMessage: string;
+
+  if (error instanceof AxiosError) {
+    // show label
+    console.log('error');
+    console.log(error);
+    errMessage = error.response?.data?.message || 'unknown error';
+  } else {
+    errMessage = 'unknown error';
+  }
+
+  notification.error({
+    message: errMessage,
+  });
+};
 
