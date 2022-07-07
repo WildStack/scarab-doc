@@ -1,8 +1,9 @@
 import React, { Fragment } from 'react';
 import { Button, PageHeader, Tag } from 'antd';
 import { ReactComponent as Logo } from '../../assets/svg/document.svg';
-import { consts, styles } from '../../libs/constants';
+import { consts } from '../../common/config/constants';
 import { DatabaseTwoTone, SaveTwoTone } from '@ant-design/icons';
+import { styles } from '../../common/config/styles';
 
 export const Topbar: React.FC = () => {
   const tag = (

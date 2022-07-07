@@ -12,6 +12,7 @@
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "antd": "^4.21.4",
+    "axios": "^0.27.2",
     "inversify": "^6.0.1",
     "inversify-react": "^1.0.2",
     "mobx": "^6.6.1",

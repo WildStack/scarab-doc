@@ -1,43 +1,23 @@
-import { useEffect, useMemo, useState } from 'react';
-import { createEditor, Descendant, Operation, Transforms } from 'slate';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { createEditor, Descendant, Editor, Operation, Transforms } from 'slate';
 import { withReact, Slate, Editable, ReactEditor } from 'slate-react';
-import { roundHeight } from '../../libs/common';
+import { roundHeight } from '../../common';
+import { consts } from '../../common/config/constants';
+import getSocketInstance from '../../common/socket';
+import { DocSession } from '../../models/state/doc-session';
+import { User } from '../../models/state/user';
 import { DocEditorType } from './declares';
+import { DocEditorState } from './doc-editor.state';
 
-function getWidthOfText(txt: string) {
-  const el = document.createElement('span');
-  el.style.visibility = 'hidden';
-  el.style.position = 'fixed';
-  el.style.pointerEvents = 'none';
-  el.innerText = txt;
-
-  document.body.appendChild(el);
-  const offsetWidth = el.offsetWidth;
-  document.body.removeChild(el);
-
-  return offsetWidth;
-}
-
-const initialValue: Descendant[] = [
-  {
-    type: DocEditorType.PARAGRAPH,
-    children: [{ text: 'Start typing...' }],
-  },
-];
-
-function randomIntFromInterval(min: number, max: number) {
-  // min and max included
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
-export const DocEditor = () => {
+export const DocEditor: React.FC = () => {
   const [editor] = useState(() => withReact(createEditor()));
   const item = localStorage.getItem('content');
-  const inistialLoadedValue = useMemo(() => (item ? JSON.parse(item) : initialValue), []);
+  const inistialLoadedValue = useMemo(
+    () => (item ? JSON.parse(item) : DocEditorState.defaultValue),
+    [item]
+  );
 
-  const [text, setText] = useState('');
-
-  const getCurrentNode = () => {
+  const getCurrentNode = useCallback(() => {
     const pageNumber = editor.selection?.anchor.path[0];
     const pageOffset = editor.selection?.anchor.offset;
 
@@ -54,22 +34,7 @@ export const DocEditor = () => {
     }
 
     return null;
-  };
-
-  const insertNode = () => {
-    Transforms.insertNodes(
-      editor,
-      {
-        type: DocEditorType.PARAGRAPH,
-        children: [{ text: 'aaaaaaaaaaa' + randomIntFromInterval(0, 100) }],
-      },
-      { at: [editor.children.length] }
-    );
-  };
-
-  const removeNode = () => {
-    Transforms.removeNodes(editor, { at: [editor.children.length - 1] });
-  };
+  }, [editor.children, editor.selection?.anchor.offset, editor.selection?.anchor.path]);
 
   const replaceNode = (at: number, newText?: string) => {
     let path = at >= editor.children.length ? at - 1 : at;
@@ -83,65 +48,75 @@ export const DocEditor = () => {
       },
       { at: [path] }
     );
-
-    // at the end of line
-    // Transforms.removeNodes(editor, { at: { path: [editor.children.length - 1, 0], offset: 0 } });
-    // Transforms.insertNodes(
-    //   editor,
-    //   {
-    //     type: DocEditorType.PARAGRAPH,
-    //     children: [{ text: randomIntFromInterval(0, 100).toString() }],
-    //   },
-    //   { at: [editor.children.length] }
-    // );
   };
 
-  // const currentNodePosition
   useEffect(() => {
-    const interval = setInterval(() => {
-      const currentElement = getCurrentNode()?.element;
-      if (!currentElement) return;
+    const socket = getSocketInstance();
+    socket.connect();
 
-      const currentDom = ReactEditor.toDOMNode(editor, currentElement);
-      const editorDom = ReactEditor.toDOMNode(editor, editor);
+    console.log(socket);
 
-      const currentDomClient = currentDom.getBoundingClientRect();
+    socket.on('user_removed', (res: User) => {
+      // update state
+      console.log('user_removed');
+      console.log(res);
+    });
+    socket.on('user_added', (res: User) => {
+      // update state
+      console.log('user_added');
+      console.log(res);
+    });
+  }, []);
 
-      // calculate y
-      const y =
-        currentDomClient.top + currentDomClient.height / 2 - editorDom.getBoundingClientRect().top;
+  // // const currentNodePosition
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     const currentElement = getCurrentNode()?.element;
+  //     if (!currentElement) return;
 
-      // calculate x
-      const caretPosOffset = window.getSelection()?.getRangeAt(0).startOffset || 0;
-      const x = getWidthOfText(currentDom.innerText.slice(0, caretPosOffset));
+  //     const currentDom = ReactEditor.toDOMNode(editor, currentElement);
+  //     const editorDom = ReactEditor.toDOMNode(editor, editor);
 
-      console.log({
-        x,
-        y: roundHeight(y),
-      });
-    }, 1500);
+  //     const currentDomClient = currentDom.getBoundingClientRect();
 
-    return () => clearInterval(interval);
-  }, [editor, getCurrentNode]);
+  //     // calculate y
+  //     const y =
+  //       currentDomClient.top + currentDomClient.height / 2 - editorDom.getBoundingClientRect().top;
+
+  //     // calculate x
+  //     const caretPosOffset = window.getSelection()?.getRangeAt(0).startOffset || 0;
+  //     const x = getWidthOfText(currentDom.innerText.slice(0, caretPosOffset));
+
+  //     console.log({
+  //       x,
+  //       y: roundHeight(y) - consts.decoEditor.charHeight,
+  //     });
+  //   }, 1500);
+
+  //   return () => clearInterval(interval);
+  // }, [editor, getCurrentNode]);
 
   return (
     <Slate
       editor={editor}
       value={inistialLoadedValue}
       onChange={value => {
-        const isAstChange = editor.operations.some(op => !Operation.isSelectionOperation(op));
-        const operation = editor.operations.at(0);
-
-        // console.log(operation);
-
-        if (Operation.isTextOperation(operation) && operation.type === 'insert_text') {
-          setText(operation.text);
-        }
+        const operations = editor.operations;
+        const isAstChange = operations.some(op => !Operation.isSelectionOperation(op));
 
         if (isAstChange) {
           // Save the value to Local Storage.
           const content = JSON.stringify(value);
           localStorage.setItem('content', content);
+        }
+
+        if (
+          operations.length === 1 &&
+          (operations.at(0)?.type === 'remove_text' || operations.at(0)?.type === 'insert_text')
+        ) {
+          // update single
+        } else {
+          // all other
         }
       }}
     >
@@ -154,46 +129,106 @@ export const DocEditor = () => {
           borderRadius: 0,
           minHeight: 800,
         }}
+        onKeyUp={event => {
+          //! replaces node
+          if (event.key === '/') {
+            replaceNode(7, 'new text');
+          }
+        }}
       />
     </Slate>
   );
 };
 
-// if (event.key === '&') {
-//   // Prevent the ampersand character from being inserted.
-//   event.preventDefault();
-//   // Execute the `insertText` method when the event occurs.
-//   editor.insertText('and');
-// }
+//  onKeyUp={event => {
+//         //! replaces node
+//         if (event.key === '/') {
+//           replaceNode(7, 'new text');
+//         }
 
-// if (event.key === '7') {
-//   Transforms.insertText(editor, '2asdas', {
-//     at: { path: [3, 0], offset: 0 },
-//   });
-// }
+//         //! insert node at the and of line
+//         if (event.key === '=') {
+//           insertNode();
+//         }
 
-// if (event.key === 'Backspace') {
-//   Transforms.delete(editor, {
-//     at: { path: [3, 0], offset: offset },
-//   });
-// }
+//         //! removes whole node
+//         if (event.key === '-') {
+//           removeNode();
+//         }
+//       }}
 
-// console.log(getCurrentNode());
+// onKeyUp={event => {
+//   // if (event.key === '&') {
+//   //   // Prevent the ampersand character from being inserted.
+//   //   event.preventDefault();
+//   //   // Execute the `insertText` method when the event occurs.
+//   //   editor.insertText('and');
+//   // }
 
-// replaceNode(7, text);
+//   // if (event.key === '7') {
+//   //   Transforms.insertText(editor, '2asdas', {
+//   //     at: { path: [3, 0], offset: 0 },
+//   //   });
+//   // }
+//   // if (event.key === 'Backspace') {
+//   //   Transforms.delete(editor, {
+//   //     at: { path: [3, 0], offset: offset },
+//   //   });
+//   // }
+//   // console.log(getCurrentNode());
+//   // replaceNode(7, text);
+//   const currentNode = getCurrentNode();
+//   // console.log('-------------------key up');
+//   // console.log(currentNode);
+//   // console.log(currentNode?.element.children?.at(0));
+//   // console.log('-------------------');
 
-// if (event.key === '/') {
-//   replaceNode(7);
-// }
+//   if (event.key === '/') {
+//     replaceNode(7, 'new text');
+//   }
 
-// //! insert node at the and of line
-// if (event.key === '=') {
-//   insertNode();
-// }
+//   //! insert node at the and of line
+//   if (event.key === '=') {
+//     insertNode();
+//   }
 
-// //! removes whole node
-// if (event.key === '-') {
-//   removeNode();
+//   //! removes whole node
+//   if (event.key === '-') {
+//     removeNode();
+//   }
+
+// }}
+
+// const insertNode = () => {
+//   Transforms.insertNodes(
+//     editor,
+//     {
+//       type: DocEditorType.PARAGRAPH,
+//       children: [{ text: 'aaaaaaaaaaa' + randomIntFromInterval(0, 100) }],
+//     },
+//     { at: [editor.children.length] }
+//   );
+// };
+
+// const removeNode = () => {
+//   Transforms.removeNodes(editor, { at: [editor.children.length - 1] });
+// };
+
+// at the end of line
+// Transforms.removeNodes(editor, { at: { path: [editor.children.length - 1, 0], offset: 0 } });
+// Transforms.insertNodes(
+//   editor,
+//   {
+//     type: DocEditorType.PARAGRAPH,
+//     children: [{ text: randomIntFromInterval(0, 100).toString() }],
+//   },
+//   { at: [editor.children.length] }
+
+// );
+
+// function randomIntFromInterval(min: number, max: number) {
+//   // min and max included
+//   return Math.floor(Math.random() * (max - min + 1) + min);
 
 // }
 

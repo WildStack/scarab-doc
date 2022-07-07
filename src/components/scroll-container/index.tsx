@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { consts } from '../../libs/constants';
+import { consts } from '../../common/config/constants';
 
 export const ScrollContainer: React.FC<{ children: ReactNode }> = props => {
   //TODO monitor body height

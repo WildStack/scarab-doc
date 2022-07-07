@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 
 import { Provider } from 'inversify-react';
-import { IocContainer } from './libs/ioc/container';
+import { IocContainer } from './common/ioc/container';
 
 import 'antd/dist/antd.css';
 import './assets/css/index.css';
