@@ -85,7 +85,7 @@ const FinalContent = observer(() => {
 
             const left = getWidthOfText(text?.slice(0, caretOffset));
 
-            // console.log(dat);
+            console.log(dat);
             // console.log({ top, left });
 
             const socket = getSocketInstance();
@@ -94,13 +94,13 @@ const FinalContent = observer(() => {
           onChange={onChange}
         >
           {docEditorState.docSession.users.map(user => {
-            return user.uuid !== authState.user.uuid ? (
+            return user.uuid !== authState.user.uuid && !(user.left === 0 && user.top === 0) ? (
               <div
                 key={user.uuid}
                 style={{
                   position: 'fixed',
                   zIndex: 10,
-                  left: offset.left + user.left,
+                  left: offset.left + user.left * 1.3,
                   top: offset.top + user.top,
                 }}
               >
