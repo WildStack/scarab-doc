@@ -2,7 +2,7 @@ import { User } from './user';
 
 export interface DocSession {
   users: User[];
-  content: any;
+  content: string;
   uuid: string;
 }
 

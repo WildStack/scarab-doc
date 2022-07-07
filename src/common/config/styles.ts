@@ -1,4 +1,4 @@
-import { createStyle } from '../index';
+import { createStyle } from '../helper';
 import { consts } from './constants';
 
 export const styles = createStyle({
@@ -18,6 +18,16 @@ export const styles = createStyle({
     backgroundColor: 'white',
     borderRadius: 0,
     minHeight: 800,
+  },
+
+  cursor: {
+    position: 'absolute',
+    top: -30,
+    color: 'black',
+    borderRadius: 3,
+    margin: 0,
+    padding: '2px 5px',
+    fontSize: 14,
   },
 });
 

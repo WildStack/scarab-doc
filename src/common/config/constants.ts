@@ -1,5 +1,5 @@
 import { Descendant } from 'slate';
-import { DocEditorType } from '../../components/doc-editor/declares';
+import { DocEditorType } from '../../presentation/doc-editor/declares';
 
 export const consts = {
   title: 'Green Doc',
@@ -17,6 +17,15 @@ export const consts = {
 
   decoEditor: {
     charHeight: 20,
+  },
+
+  socketEvents: {
+    userRemoved: 'user_removed',
+    userAdded: 'user_added',
+    notifyUpdate: 'notify_update',
+    notifyUpdateCaret: 'notify_update_caret',
+    distributeCaret: 'distribute_caret',
+    distributeChange: 'distribute_change',
   },
 };
 

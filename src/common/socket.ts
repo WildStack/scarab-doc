@@ -1,5 +1,5 @@
 import { io, Socket } from 'socket.io-client';
-import { AuthState } from '../components/auth/auth.state';
+import { AuthState } from '../presentation/auth/auth.state';
 import { consts } from './config/constants';
 import { IocContainer } from './ioc/container';
 

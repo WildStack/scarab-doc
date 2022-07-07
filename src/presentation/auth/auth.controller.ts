@@ -1,5 +1,5 @@
 import { inject } from 'inversify';
-import { showErroNotification } from '../../common';
+import { showErroNotification } from '../../common/helper';
 import { http } from '../../common/http';
 import { Singleton } from '../../common/ioc/container.decorator';
 import { DocSession } from '../../models/state/doc-session';

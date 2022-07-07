@@ -1,8 +1,8 @@
 import { inject } from 'inversify';
-import { toJS } from 'mobx';
-import { showErroNotification } from '../../common';
+import { showErroNotification } from '../../common/helper';
 import { http } from '../../common/http';
 import { Singleton } from '../../common/ioc/container.decorator';
+import { NotifyUpdateCaret } from '../../models/socket/notify-update-caret';
 import { User } from '../../models/state/user';
 import { DocEditorState } from './doc-editor.state';
 
@@ -27,7 +27,7 @@ export class DocEditorController {
     };
   }
 
-  public updateCaretPosition(res: { top: number; left: number; uuid: string }) {
+  public updateCaretPosition(res: NotifyUpdateCaret) {
     const user = this.docEditorState.docSession.users.find(el => el.uuid === res.uuid);
 
     if (user) {
@@ -41,16 +41,12 @@ export class DocEditorController {
       const tempSession = Object.assign({}, this.docEditorState.docSession);
       tempSession.users.push(user);
       this.docEditorState.docSession = tempSession;
-
-      console.log(toJS(this.docEditorState.docSession));
     }
 
     if (type === 'del') {
       const tempSession = this.docEditorState.docSession;
       tempSession.users = tempSession.users.filter(el => el.uuid !== user.uuid);
       this.docEditorState.docSession = tempSession;
-
-      console.log(toJS(this.docEditorState.docSession));
     }
   }
 }

@@ -4,15 +4,16 @@ import getSocketInstance from '../../common/socket';
 
 import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import { useInjection } from 'inversify-react';
-import { DocEditorController } from '../doc-editor/doc-editor.controller';
-import { DocEditorState } from '../doc-editor/doc-editor.state';
+import { DocEditorController } from './doc-editor.controller';
+import { DocEditorState } from './doc-editor.state';
 import { observer } from 'mobx-react';
 import { consts } from '../../common/config/constants';
-import { getWidthOfText } from '../../common';
+import { getWidthOfText } from '../../common/helper';
 import { AuthState } from '../auth/auth.state';
-import { CustomCursor } from '../custom-cursor';
+import { CustomCursor } from '../../fragments/cursor';
 import { ViewUpdate } from '@codemirror/view';
 import { User } from '../../models/state/user';
+import { NotifyUpdateCaret } from '../../models/socket/notify-update-caret';
 
 const FinalContent = observer(() => {
   // local
@@ -34,11 +35,10 @@ const FinalContent = observer(() => {
       authState.user.top,
       authState.user.left
     );
-
     docEditorController.updateDocSession(value);
 
     const socket = getSocketInstance();
-    socket.emit('distribute_change', value);
+    socket.emit(consts.socketEvents.distributeChange, value);
   }, []);
 
   useEffect(() => {
@@ -57,11 +57,11 @@ const FinalContent = observer(() => {
 
   useEffect(() => {
     if (el.current) {
-      const x = document.querySelector<HTMLDivElement>('.cm-editor');
+      const temp = document.querySelector<HTMLDivElement>('.cm-editor');
 
       setOffset({
-        top: x?.getBoundingClientRect().top || 0,
-        left: x?.getBoundingClientRect().left || 0,
+        top: temp?.getBoundingClientRect().top || 0,
+        left: temp?.getBoundingClientRect().left || 0,
       });
     }
   }, [el.current]);
@@ -78,18 +78,19 @@ const FinalContent = observer(() => {
           ref={el}
           basicSetup={{ lineNumbers: false, foldGutter: false }}
           onStatistics={dat => {
-            const top =
-              dat.line.number * consts.decoEditor.charHeight - consts.decoEditor.charHeight;
+            const { charHeight } = consts.decoEditor;
+
+            const top = dat.line.number * charHeight - charHeight;
             const text = docEditorState.docSession.content?.slice(dat.line.from, dat.line.to);
             const caretOffset = dat.selectionAsSingle.to - dat.line.from;
-
             const left = getWidthOfText(text?.slice(0, caretOffset));
-
-            console.log(dat);
-            // console.log({ top, left });
-
             const socket = getSocketInstance();
-            socket.emit('distribute_caret', { top, left, uuid: authState.user.uuid });
+
+            socket.emit(consts.socketEvents.distributeCaret, {
+              top,
+              left,
+              uuid: authState.user.uuid,
+            });
           }}
           onChange={onChange}
         >
@@ -121,18 +122,21 @@ export const Final = () => {
     const socket = getSocketInstance();
     socket.connect();
 
-    socket.on('user_removed', (res: User) => {
-      docEditorController.updateUser(res, 'del');
-    });
-    socket.on('user_added', (res: User) => {
+    socket.on(consts.socketEvents.userAdded, (res: User) => {
+      // add user and caret
       docEditorController.updateUser(res, 'add');
     });
 
-    socket.on('notify_update', (res: string) => {
+    socket.on(consts.socketEvents.userRemoved, (res: User) => {
+      // remove user and caret
+      docEditorController.updateUser(res, 'del');
+    });
+
+    socket.on(consts.socketEvents.notifyUpdate, (res: string) => {
       // update content
       docEditorController.updateDocSession(res);
     });
-    socket.on('notify_update_caret', (res: { top: number; left: number; uuid: string }) => {
+    socket.on(consts.socketEvents.notifyUpdateCaret, (res: NotifyUpdateCaret) => {
       // update caret
       docEditorController.updateCaretPosition(res);
     });
