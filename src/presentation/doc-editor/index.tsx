@@ -15,7 +15,7 @@ import { ViewUpdate } from '@codemirror/view';
 import { User } from '../../models/state/user';
 import { NotifyUpdateCaret } from '../../models/socket/notify-update-caret';
 
-const FinalContent = observer(() => {
+const DocEditorChild = observer(() => {
   // local
   const el = useRef<ReactCodeMirrorRef>(null);
   const [offset, setOffset] = useState({
@@ -122,7 +122,7 @@ const FinalContent = observer(() => {
   );
 });
 
-export const Final = () => {
+export const DocEditor = () => {
   const docEditorController = useInjection(DocEditorController);
 
   useEffect(() => {
@@ -151,7 +151,7 @@ export const Final = () => {
 
   return (
     <Fragment>
-      <FinalContent />
+      <DocEditorChild />
     </Fragment>
   );
 };

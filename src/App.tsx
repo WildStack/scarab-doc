@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import { Fragment } from 'react';
 import { Auth } from './presentation/auth';
 import { AuthState } from './presentation/auth/auth.state';
-import { Final } from './presentation/doc-editor';
+import { DocEditor } from './presentation/doc-editor';
 import { Spacer } from './fragments/spacer';
 import { Topbar } from './fragments/topbar';
 
@@ -16,7 +16,7 @@ function App() {
         <Fragment>
           <Topbar />
           <Spacer />
-          <Final />
+          <DocEditor />
         </Fragment>
       ) : (
         <Auth />
