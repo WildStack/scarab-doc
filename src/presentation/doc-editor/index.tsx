@@ -28,17 +28,23 @@ const FinalContent = observer(() => {
   const docEditorState = useInjection(DocEditorState);
   const authState = useInjection(AuthState);
 
-  const onChange = useCallback(async (value: string, x: ViewUpdate) => {
-    docEditorController.saveContent(
-      value,
-      authState.user.uuid,
-      authState.user.top,
-      authState.user.currentLineText
-    );
-    docEditorController.updateDocSession(value);
+  const onChange = useCallback(async (value: string, viewUpdate: ViewUpdate) => {
+    // Whether the selection was explicitly set in this update.
+    if (viewUpdate.selectionSet) {
+      docEditorController.saveContent(
+        value,
+        authState.user.uuid,
+        authState.user.top,
+        authState.user.currentLineText
+      );
+      docEditorController.updateDocSession(value);
 
-    const socket = getSocketInstance();
-    socket.emit(consts.socketEvents.distributeChange, value);
+      const socket = getSocketInstance();
+      socket.emit(consts.socketEvents.distributeChange, {
+        content: value,
+        uuid: authState.user.uuid,
+      });
+    }
   }, []);
 
   useEffect(() => {
@@ -133,9 +139,9 @@ export const Final = () => {
       docEditorController.updateUser(res, 'del');
     });
 
-    socket.on(consts.socketEvents.notifyUpdate, (res: string) => {
+    socket.on(consts.socketEvents.notifyUpdate, (res: { content: string; uuid: string }) => {
       // update content
-      docEditorController.updateDocSession(res);
+      docEditorController.updateDocSession(res.content);
     });
     socket.on(consts.socketEvents.notifyUpdateCaret, (res: NotifyUpdateCaret) => {
       // update caret
