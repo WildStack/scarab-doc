@@ -15,6 +15,8 @@
     "antd": "^4.21.4",
     "axios": "^0.27.2",
     "codemirror": "^6.0.1",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
     "inversify": "^6.0.1",
     "inversify-react": "^1.0.2",
     "mobx": "^6.6.1",
@@ -34,7 +36,8 @@
     "dev": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "start-server": "node ./server.js"
   },
   "eslintConfig": {
     "extends": [
@@ -55,3 +58,4 @@
     ]
   }
 }
+
