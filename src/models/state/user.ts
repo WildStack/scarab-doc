@@ -4,6 +4,6 @@ export interface User {
   username: string;
 
   top: number;
-  left: number;
+  currentLineText: string;
 }
 

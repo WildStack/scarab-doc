@@ -11,7 +11,7 @@ export const CustomCursor: React.FC<CustomCursorProps> = props => {
     <Fragment>
       <div style={{ position: 'relative' }}>
         <div style={{ backgroundColor: props.color, ...styles.cursor }}>{props.name}</div>
-        <div style={{ height: 20, width: 2, backgroundColor: props.color }} />
+        <div style={{ height: 16, width: 2, backgroundColor: props.color }} />
       </div>
     </Fragment>
   );

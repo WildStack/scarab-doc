@@ -1,6 +1,6 @@
 export interface NotifyUpdateCaret {
   top: number;
-  left: number;
+  currentLineText: string;
   uuid: string;
 }
 

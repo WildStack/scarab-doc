@@ -33,7 +33,7 @@ const FinalContent = observer(() => {
       value,
       authState.user.uuid,
       authState.user.top,
-      authState.user.left
+      authState.user.currentLineText
     );
     docEditorController.updateDocSession(value);
 
@@ -83,26 +83,27 @@ const FinalContent = observer(() => {
             const top = dat.line.number * charHeight - charHeight;
             const text = docEditorState.docSession.content?.slice(dat.line.from, dat.line.to);
             const caretOffset = dat.selectionAsSingle.to - dat.line.from;
-            const left = getWidthOfText(text?.slice(0, caretOffset));
+            const currentLineText = text?.slice(0, caretOffset);
             const socket = getSocketInstance();
 
             socket.emit(consts.socketEvents.distributeCaret, {
               top,
-              left,
+              currentLineText: currentLineText,
               uuid: authState.user.uuid,
             });
           }}
           onChange={onChange}
         >
           {docEditorState.docSession.users.map(user => {
-            return user.uuid !== authState.user.uuid && !(user.left === 0 && user.top === 0) ? (
+            return user.uuid !== authState.user.uuid &&
+              !(user.currentLineText === '' && user.top === 0) ? (
               <div
                 key={user.uuid}
                 style={{
                   position: 'fixed',
                   zIndex: 10,
-                  left: offset.left + user.left * 1.3,
-                  top: offset.top + user.top,
+                  left: offset.left + getWidthOfText(user.currentLineText) - 2,
+                  top: offset.top + user.top - 1,
                 }}
               >
                 <CustomCursor name={user.username} color={user.color} />

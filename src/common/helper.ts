@@ -14,10 +14,12 @@ export const roundHeight = (x: number) => {
  * get width of given text with temp span
  */
 export const getWidthOfText = (txt: string) => {
-  const el = document.createElement('span');
+  const el = document.createElement('div');
   el.style.visibility = 'hidden';
   el.style.position = 'fixed';
   el.style.pointerEvents = 'none';
+  el.classList.add('cm-line');
+  el.style.fontFamily = 'monospace'; //! crucial
   el.innerText = txt;
 
   document.body.appendChild(el);
@@ -36,14 +38,9 @@ export const createStyle = <T extends string>(s: Record<T, CSSProperties>) => s;
  * self explanatory
  */
 export const showErroNotification = (error: any) => {
-  console.log('show notification');
-
   let errMessage: string;
 
   if (error instanceof AxiosError) {
-    // show label
-    console.log('error');
-    console.log(error);
     errMessage = error.response?.data?.message || 'unknown error';
   } else {
     errMessage = 'unknown error';

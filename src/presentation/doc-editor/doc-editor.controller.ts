@@ -10,9 +10,9 @@ import { DocEditorState } from './doc-editor.state';
 export class DocEditorController {
   @inject(DocEditorState) private readonly docEditorState: DocEditorState;
 
-  public async saveContent(content: string, uuid: string, top: number, left: number) {
+  public async saveContent(content: string, uuid: string, top: number, currentLineText: string) {
     try {
-      const data = await http.put('/doc-data', { content, uuid, top, left });
+      const data = await http.put('/doc-data', { content, uuid, top, currentLineText });
       return data;
     } catch (error) {
       showErroNotification(error);
@@ -32,7 +32,7 @@ export class DocEditorController {
 
     if (user) {
       user.top = res.top;
-      user.left = res.left;
+      user.currentLineText = res.currentLineText;
     }
   }
 
