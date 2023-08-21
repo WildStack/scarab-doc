@@ -1,6 +1,6 @@
 {
-  "short_name": "Green Doc",
-  "name": "Collaborate with people in Green Doc",
+  "short_name": "Scarab Doc",
+  "name": "Collaborate with people in Scarab Doc",
   "icons": [
     {
       "src": "favicon.ico",
@@ -13,4 +13,3 @@
   "theme_color": "#000000",
   "background_color": "#ffffff"
 }
-
