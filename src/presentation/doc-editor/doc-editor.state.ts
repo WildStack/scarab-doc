@@ -1,13 +1,9 @@
 import { makeAutoObservable } from 'mobx';
-import { Descendant } from 'slate';
-import { docEditorStateDefaultValue } from '../../common/config/constants';
 import { Singleton } from '../../common/ioc/container.decorator';
 import { DocSession } from '../../models/state/doc-session';
 
 @Singleton
 export class DocEditorState {
-  public static defaultValue: Descendant[] = docEditorStateDefaultValue;
-
   private _docSession: DocSession;
 
   constructor() {
@@ -23,9 +19,6 @@ export class DocEditorState {
   }
 
   public get getDocContent() {
-    return this._docSession.content
-      ? (JSON.parse(this._docSession.content) as Descendant[])
-      : DocEditorState.defaultValue;
+    return JSON.parse(this._docSession.content);
   }
 }
-

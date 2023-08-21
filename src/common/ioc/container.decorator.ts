@@ -2,7 +2,7 @@ import { decorate, injectable } from 'inversify';
 import { IocContainer } from './container';
 
 interface Constructor {
-  new (...args: any[]): any;
+  new (...args: object[]): object;
 }
 
 export function Singleton(cls: Constructor) {
@@ -14,4 +14,3 @@ export function Injectable(cls: Constructor) {
   IocContainer.getContainer()?.bind(cls).toSelf();
   decorate(injectable(), cls);
 }
-

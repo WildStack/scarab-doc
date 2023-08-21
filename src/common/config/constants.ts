@@ -1,11 +1,7 @@
-import { Descendant } from 'slate';
-import { DocEditorType } from '../../presentation/doc-editor/declares';
-
 export const consts = {
   title: 'Green Doc',
   subTitle: 'New Document',
-  backendApiUrl: process.env.REACT_APP_BACKEND || '',
-  backendApiUrlRoot: process.env.REACT_APP_BACKEND_ROOT || '',
+  backendApiUrl: import.meta.env.VITE_APP_BACKEND || '',
 
   topBar: {
     height: 80,
@@ -28,11 +24,3 @@ export const consts = {
     distributeChange: 'distribute_change',
   },
 };
-
-export const docEditorStateDefaultValue: Descendant[] = [
-  {
-    type: DocEditorType.PARAGRAPH,
-    children: [{ text: 'Start typing...' }],
-  },
-];
-

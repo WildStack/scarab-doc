@@ -9,15 +9,12 @@ export default function getSocketInstance() {
   const authState = IocContainer.getContainer().get(AuthState);
 
   if (socketInstance == null) {
-    socketInstance = io(consts.backendApiUrlRoot, {
+    socketInstance = io(consts.backendApiUrl, {
       transports: ['websocket'],
       timeout: 60000,
       auth: cb => cb({ uuid: authState.user.uuid }),
     });
-
-    socketInstance.emit('saddas');
   }
 
   return socketInstance;
 }
-

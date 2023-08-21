@@ -22,4 +22,3 @@ ReactDOM.createRoot(rootElement).render(
     <App />
   </Provider>
 );
-
