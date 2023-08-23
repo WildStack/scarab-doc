@@ -1,5 +1,5 @@
 # Scarab Doc
-#### Named after `Glorious Scarab`
+###### Named after `Glorious Scarab`
 
 <img src="./src/assets/scarab.png" width="45" style="margin:15px 0"/>
 
