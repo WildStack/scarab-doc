@@ -4,7 +4,7 @@
 
 Scarab-Doc is a minimalist collaborative editing tool designed for seamless teamwork. Built with React and powered by Socket.io, Scarab-Doc offers a straightforward solution for real-time document collaboration.
 
-💻 Monaco Editor Integration: Experience a smooth editing experience with the Monaco Editor, providing advanced features in a simple interface.
+💻 CodeMirror Integration: Experience a smooth editing experience with CodeMirror, providing advanced features in a simple interface.
 
 👥 Global Collaboration: Enter your username and instantly join the collaborative workspace. There's no limit to the number of users, enabling effortless collaboration with anyone, anywhere.
 
