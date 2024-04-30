@@ -1,14 +1,14 @@
-# Scarab Doc
+# Beastz Doc
 
-<img src="./src/assets/scarab.png" width="45" style="margin:15px 0"/>
+<img src="./src/assets/beastz.png" width="45" style="margin:15px 0"/>
 
-Scarab-Doc is a minimalist collaborative editing tool designed for seamless teamwork. Built with React and powered by Socket.io, Scarab-Doc offers a straightforward solution for real-time document collaboration.
+Beastz-Doc is a minimalist collaborative editing tool designed for seamless teamwork. Built with React and powered by Socket.io, Beastz-Doc offers a straightforward solution for real-time document collaboration.
 
 💻 CodeMirror Integration: Experience a smooth editing experience with CodeMirror, providing advanced features in a simple interface.
 
 👥 Global Collaboration: Enter your username and instantly join the collaborative workspace. There's no limit to the number of users, enabling effortless collaboration with anyone, anywhere.
 
-✨ Simplicity at its Core: Scarab-Doc strips away complexity, focusing solely on the essentials. Just enter your username and start editing – it's that easy.
+✨ Simplicity at its Core: Beastz-Doc strips away complexity, focusing solely on the essentials. Just enter your username and start editing – it's that easy.
 
 🌐 Real-Time Updates: Witness changes as they happen with real-time synchronization, ensuring everyone stays on the same page, literally.
 

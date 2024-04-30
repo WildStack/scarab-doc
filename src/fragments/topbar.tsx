@@ -2,7 +2,7 @@ import React from 'react';
 import { consts } from '../common/config/constants';
 import { styles } from '../common/config/styles';
 import { PageHeader } from 'antd';
-import url from '../assets/scarab.png';
+import url from '../assets/beastz.png';
 
 export const Topbar: React.FC = () => {
   return (

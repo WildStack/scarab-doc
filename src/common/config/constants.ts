@@ -1,5 +1,5 @@
 export const consts = {
-  title: 'Scarab Doc',
+  title: 'Beastz Doc',
   subTitle: 'New Document',
   backendApiUrl: import.meta.env.VITE_APP_BACKEND || '',
 
