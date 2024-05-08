@@ -1,10 +1,11 @@
 import 'reflect-metadata';
-import ReactDOM from 'react-dom/client';
-import App from './App';
 
+import ReactDOM from 'react-dom/client';
 import { Provider } from 'inversify-react';
 import { configure } from 'mobx';
+
 import { IocContainer } from './common/ioc/container';
+import { App } from './App';
 
 // css
 import 'antd/dist/antd.css';

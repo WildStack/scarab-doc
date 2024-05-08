@@ -7,7 +7,7 @@ import { DocEditor } from './presentation/doc-editor';
 import { Spacer } from './fragments/spacer';
 import { Topbar } from './fragments/topbar';
 
-function App() {
+export const App = observer(() => {
   const authState = useInjection(AuthState);
 
   return (
@@ -23,6 +23,4 @@ function App() {
       )}
     </Fragment>
   );
-}
-
-export default observer(App);
+});

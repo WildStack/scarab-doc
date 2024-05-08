@@ -37,7 +37,7 @@ export const createStyle = <T extends string>(s: Record<T, CSSProperties>) => s;
 /**
  * self explanatory
  */
-export const showErroNotification = (error: any) => {
+export const showErroNotification = (error: unknown) => {
   let errMessage: string;
 
   if (error instanceof AxiosError) {
@@ -50,4 +50,3 @@ export const showErroNotification = (error: any) => {
     message: errMessage,
   });
 };
-

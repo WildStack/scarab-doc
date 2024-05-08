@@ -10,8 +10,12 @@
   "scripts": {
     "dev": "vite --open",
     "build": "tsc && vite build",
+    "build:run": "vite preview",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "modules:update:check": "npx npm-check-updates",
+    "modules:update": "npx npm-check-updates -u",
+    "use:nvm": "source ~/.nvm/nvm.sh && nvm use"
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
@@ -27,7 +31,7 @@
     "react-dom": "^18.2.0",
     "reflect-metadata": "^0.1.13",
     "socket.io-client": "^4.5.1",
-    "typescript": "^4.4.2",
+    "typescript": "^5.0.4",
     "web-vitals": "^2.1.0"
   },
   "devDependencies": {
